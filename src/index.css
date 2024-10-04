@@ -1,0 +1,642 @@
+* {
+  background-color: black;
+  list-style: none;
+  text-decoration: none !important;
+}
+
+.responsive-nabar li{
+  background-color: #111 !important;
+  
+  
+}
+
+.card h1{
+  font-size: 13px;
+  letter-spacing: 0.7px;
+  font-weight: normal;
+}
+
+.card h1 span{
+  color: #cd1f7c;
+}
+.responsive-nabar li a{
+  background-color: #202020;
+  border-radius: 10px;
+  color: #cd1f7c !important;
+  text-transform: capitalize;
+  font-weight: 500;
+  margin-top: 10px;
+  padding-left: 30px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  padding: 5px;
+}
+
+.responsive-nabar li a i{
+  background-color: #202020;
+  padding: 5px;
+ 
+}
+
+
+
+
+
+
+
+.bi-x-circle-fill{
+  background-color: transparent;
+  
+}
+#ad-container iframe {
+  width: 100% !important;
+  /* Ensures iframe scales within container */
+  height: 100% !important;
+  /* Ensures iframe scales within container */
+  border: none;
+  /* Removes iframe border */
+}
+
+.card {
+  background-color: transparent;
+}
+
+.navbar-brand img {
+  width: 40%;
+  margin-top: 10px;
+}
+
+
+
+
+/* Basic layout */
+.side-navbar-container {
+  position: relative;
+  z-index: 999;
+  cursor: pointer;
+  /* Make sure the button is on top of other content */
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+  font-size: 30px;
+  padding: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+  /* Higher z-index to ensure it shows above content */
+}
+
+/* Side Navbar */
+.side-navbar {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  /* Make it fixed to stay on top of the content */
+  top: 0;
+  left: -250px;
+  /* Hidden by default */
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  z-index: 1000;
+  /* Ensure it shows above other content */
+}
+
+.side-navbar.open {
+  left: 0;
+  /* Slide in from the left when open */
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #cd1f7c !important;
+  outline: none;
+}
+
+/* Side Navbar Links */
+.side-navbar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.side-navbar ul li {
+  padding: 8px 16px;
+  text-align: left;
+}
+
+.side-navbar ul li a {
+  text-decoration: none;
+  color: #818181;
+  font-size: 18px;
+  display: block;
+  transition: 0.3s;
+}
+
+.side-navbar ul li a:hover {
+  color: #f1f1f1;
+}
+
+
+
+
+
+
+
+
+
+@media (max-width: 600px) {
+  #ad-container {
+    max-width: 100%;
+    /* Adjusts max width for smaller screens */
+  }
+  .dekstop-search-bar{
+    display: none !important;
+  }
+  
+
+  #ad-container iframe {
+    height: auto;
+    /* Adjusts iframe height for smaller screens */
+  }
+}
+
+
+
+
+
+
+.navbar div {
+  display: block !important;
+  width: 80%;
+  margin: auto;
+}
+
+.navbar-brand {
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Navbar Styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  transition: transform 0.3s;
+  transform: translateY(0); /* Default position */
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+.navbar.hidden {
+  transform: translateY(-100%); /* Move it off-screen */
+}
+
+/* Side Navbar Styles */
+.side-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px; /* Adjust based on your desired sidebar width */
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+  background-color: #111; /* Adjust based on your design */
+}
+
+.side-navbar.open {
+  transform: translateX(0);
+}
+
+/* Additional Styles for Responsive Design */
+
+
+.wrapper {
+  width: 100%;
+  max-width: 31.25rem;
+  margin: 6rem auto;
+}
+
+.label {
+  font-size: .625rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: +1.3px;
+  margin-bottom: 1rem;
+}
+
+.searchBar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#searchQueryInput {
+  width: 99%;
+  box-sizing: border-box;
+  margin: auto;
+  background: #181818;
+  outline: none;
+  border: none;
+  border-radius: 1.625rem;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+#searchQuerySubmit {
+  width: 3.5rem;
+  height: 2.8rem;
+  margin-left: -3.5rem;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+#searchQuerySubmit svg {
+  background-color: transparent;
+  color: #cd1f7c !important;
+}
+
+.follow {
+  background-color: #cd1f7c;
+}
+
+.card-title {
+  color: #cd1f7c;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.card-body span {
+  color: #ffff;
+}
+
+.card {
+  border: none;
+
+}
+
+.all-cards {
+  width: 90%;
+  margin: 30px auto;
+
+}
+
+.views {
+  background-color: #000;
+  opacity: 60%;
+  border-radius: 7px;
+  color: white;
+}
+
+
+#searchQuerySubmit:hover {
+  cursor: pointer;
+}
+
+.modal-body label {
+  text-align: start !important;
+  font-size: 16px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.card img {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+  background-color: transparent;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 10px;
+  border: 1px solid #cd1f7c;
+  background-color: #cd1f7c;
+  cursor: pointer;
+  color: #ffff;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  border-radius: 5px;
+}
+
+.pagination button:disabled {
+  background-color: #eee;
+  cursor: not-allowed;
+}
+
+.page-button {
+  padding: 10px 20px !important;
+  border: 1px solid #fff !important;
+  background-color: #fff !important;
+  color: black !important;
+  cursor: pointer;
+}
+
+.page-button.active {
+  background-color: #cd1f7c !important;
+  color: #fff !important;
+  border: 1px solid #cd1f7c !important;
+}
+
+.nav-button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.footer {
+  background-color: #000;
+  color: #fff;
+  padding: 20px 0;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: auto;
+  flex-wrap: wrap;
+
+}
+
+.footer-section {
+  margin-bottom: 20px;
+
+}
+
+.footer-section h4 {
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+  color: #ff0099;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.all-cards{
+ margin-top: 10%;
+}
+
+.footer-section img {
+  max-width: 100%;
+  /* Ensure images resize responsively */
+  height: 200px;
+  /* Maintain aspect ratio */
+}
+
+.nav-ul {
+  display: flex;
+  justify-content: space-around;
+  background-color: #202020;
+  width: 100%;
+  margin: 10px auto auto auto;
+  padding: 0px;
+
+}
+
+.card-body {
+  padding: 10px 0px;
+}
+
+.nav-ul li {
+  background-color: #202020;
+  color: #ffff;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+/* Add this to your CSS file */
+/* Add this to your CSS file (e.g., styles.css) */
+.nav-ul li {
+  display: inline;
+
+  cursor: pointer;
+}
+
+.active-link {
+  color: red !important;
+  /* Change this to the color you want for the active link */
+}
+
+
+
+
+
+.navbar-responsive {
+  color: rgb(255, 255, 255) !important;
+  padding: 10px;
+  font-size: 20px;
+  text-transform: uppercase;
+
+}
+
+.navbar-responsive li {
+  background-color: #202020;
+  text-align: center;
+}
+
+.sidenav-logo{
+  width: 40%;
+  background-color: #111;
+  margin-left: 10px;
+}
+.close-btn{
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.navbar-brand {
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  justify-content: space-between;
+}
+
+.navbar-brand i {
+  color: #ffff;
+  font-size: 30px;
+  display: block;
+}
+
+.navbar-brand h1{
+  color: #ffff;
+  font-family: "Rubik Mono One", monospace;
+  font-weight: 600;
+  font-style: normal;
+ 
+}
+
+.navbar-brand h1 span{
+  color: #cd1f7c;
+}
+
+
+
+.suggestions-box{
+  top: 100%;
+  position: absolute;
+  background-color: #181818;
+  left: 14%;
+  width: 70% !important;
+  margin: auto;
+  border-radius: 10px;
+  margin-top: 10%;
+}
+
+.suggestions-box ul, .suggestions-box ul li ,.suggestions-box ul li a{
+  background-color: #181818;
+  color: #ffff;
+  margin-top: 10px;
+ 
+}
+
+.group-title{
+  font-size: .7rem;
+    padding: 4px 0px;
+    text-transform: uppercase;
+    color: rgba(246, 246, 246, .5);
+    text-align: center;
+    margin-top: 10px;
+    background-color: transparent;
+}
+
+.group-title::after{
+  content: "_____________________________________________ ";
+  
+  
+}
+
+@media(max-width:650px) {
+  .navbar-brand {
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+  }
+
+  
+.suggestions-box{
+  top: 100%;
+  position: absolute;
+  background-color: #181818;
+  left: 4%;
+  width: 90% !important;
+  margin: auto;
+  border-radius: 10px;
+  margin-top: 10%;
+}
+
+  .all-cards{
+    margin-top: 20%;
+   }
+  .nav-ul {
+    display: none;
+  }
+
+  .admin-nav-ul{
+   display: flex !important;
+  }
+
+ 
+  .navbar-brand i {
+    color: #ffff;
+    font-size: 30px;
+    display: block;
+  }
+
+  .searchBar {
+    display: none;
+  }
+
+  .col {
+    margin: 20px 0px 0px 0px;
+  }
+
+  .card {
+    background-color: transparent;
+  }
+
+  .navbar div {
+    display: block !important;
+    width: 100%;
+  }
+
+  .card img {
+    height: 250px;
+  }
+
+
+  .footer-content {
+    justify-content: center;
+  }
+
+  .footer-section {
+    text-align: center;
+    width: 100%;
+  }
+
+  .card-body {
+    padding: 5px 0px;
+  }
+
+  .card h1 {
+    font-size: 13px;
+    letter-spacing: 0.7px;
+    font-weight: normal;
+  }
+
+  .card h5 {
+    font-size: 13px;
+    margin: 0px 0px 0px !important;
+  }
+
+  .card span {
+    font-size: 13px;
+
+  }
+
+}
