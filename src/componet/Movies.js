@@ -2,13 +2,12 @@ import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import Footer from "./Footer";
-import BannerAd from "../Adds/BannerAdd";
 import { FaHandPointer } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-function Home() {
+function Movies() {
   const [postdata, setPostData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,14 +22,15 @@ function Home() {
     setError(null);
     try {
       const response = await fetch(
-        `${apiUrl}/getpostdata?page=${page}&limit=${itemsPerPage}&search=${search}`,
+        `${apiUrl}/getmovies?page=${page}&limit=${itemsPerPage}&search=${search}`,
         { mode: "cors" }
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
       const data = await response.json();
-      setPostData(shuffleArray(data.records)); // Shuffle the data
+      const filteredData = data.records.filter(item => item.minutes > 49); // Filter movies with more than 49 minutes
+      setPostData(filteredData);
       setTotalPages(data.totalPages);
       setCurrentPage(data.currentPage);
     } catch (error) {
@@ -43,15 +43,6 @@ function Home() {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -92,18 +83,22 @@ function Home() {
 
   const renderPageNumbers = () => {
     const pageNumbers = [];
+
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }
     } else {
+      // First Section
       if (currentPage <= 3) {
         for (let i = 1; i <= 3; i++) {
           pageNumbers.push(i);
         }
         pageNumbers.push("...");
         pageNumbers.push(totalPages);
-      } else if (currentPage > 3 && currentPage < totalPages - 2) {
+      }
+      // Middle Section
+      else if (currentPage > 3 && currentPage < totalPages - 2) {
         pageNumbers.push(1);
         pageNumbers.push("...");
         for (let i = currentPage - 1; i <= currentPage + 1; i++) {
@@ -111,7 +106,9 @@ function Home() {
         }
         pageNumbers.push("...");
         pageNumbers.push(totalPages);
-      } else {
+      }
+      // Last Section
+      else {
         pageNumbers.push(1);
         pageNumbers.push("...");
         for (let i = totalPages - 2; i <= totalPages; i++) {
@@ -140,10 +137,11 @@ function Home() {
   return (
     <>
       {/* <Helmet>
-        <title>xvids xxbrits altyaazili porno alt yazili porno | Hexmy</title>
+        <title>kkvsh porn Iranian Pussy trisha paytas porn fullporner hexmy</title>
+        <link rel="canonical" href="https://hexmy.com/movies"/>
         <meta
           name="description"
-          content="Influencersgonewild xvide xvids xvideo xvodeos sex izle hentairead jessenia rebecca porn megbanksxo pornp phim sex vietsub mckenzie valdez leaked | hexmy"
+          content="sexy movie fsiblog foreign sex american super sexy movie irani sex mom sex gulf sex indian sexy movie russian sexy movie www xlxx jamelizzzz leaked | Hexmy"
         />
       </Helmet> */}
 
@@ -152,8 +150,8 @@ function Home() {
       {loading && <p>Loading...</p>}
       {error && <p className="error">Error: {error}</p>}
 
-      <div id="" className="all-cards">
-        <div className="row row-cols-2 row-cols-md-5 g-4">
+      <div id="ad-container" className="all-cards">
+        <div className="row row-cols-1 row-cols-md-5 g-4">
           {postdata.map((items) => (
             <div
               className="col"
@@ -163,7 +161,7 @@ function Home() {
               <Link to={`/playVideo/${items._id}`}>
                 <div className="card">
                   <img
-                    style={{ height: "100px" }}
+                    style={{ height: "250px" }}
                     src={items.imageUrl}
                     className="card-img-top position-relative"
                     alt={
@@ -185,13 +183,17 @@ function Home() {
                     </span>
                   </div>
 
-                  <h1 className="p-0 m-0 text-light mt-2">{items.titel}</h1>
+                  <h1 className="p-0 m-0 text-light mt-2">
+                    {items.titel} / Provided By: HexMy
+                  </h1>
                   <div className="card-body">
                     <span
                       style={{ top: "5%", padding: "2px 8px", right: "3%" }}
                       className="position-absolute views"
                     >
-                      <span style={{ fontSize: "0.9rem", color: "#ffff" }}>HD</span>
+                      <span style={{ fontSize: "0.9rem", color: "#ffff" }}>
+                        HD
+                      </span>
                     </span>
                     <span
                       style={{
@@ -216,19 +218,13 @@ function Home() {
 
       <div className="pagination">
         {currentPage > 1 && (
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            className="nav-button"
-          >
+          <button onClick={() => handlePageChange(currentPage - 1)} className="nav-button">
             Previous
           </button>
         )}
         {renderPageNumbers()}
         {currentPage < totalPages && (
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            className="nav-button"
-          >
+          <button onClick={() => handlePageChange(currentPage + 1)} className="nav-button">
             Next
           </button>
         )}
@@ -239,4 +235,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Movies;

@@ -66,23 +66,50 @@ function Starts() {
 
   const renderPageNumbers = () => {
     let pageNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
-      if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+  
+    // If currentPage is less than 2, display 3 buttons starting from 1
+    if (currentPage <= 2) {
+      for (let i = 1; i <= Math.min(3, totalPages); i++) {
         pageNumbers.push(
           <button
             key={i}
             onClick={() => handlePageChange(i)}
-            className={`page-button ${currentPage === i ? 'active' : ''}`}
+            className={`page-button ${currentPage === i ? "active" : ""}`}
           >
             {i}
           </button>
         );
-      } else if (i === 2 && currentPage > 3) {
-        pageNumbers.push(<span key="ellipsis1">...</span>);
-      } else if (i === totalPages - 1 && currentPage < totalPages - 2) {
-        pageNumbers.push(<span key="ellipsis2">...</span>);
       }
     }
+    // If currentPage is near the end, show the last 3 pages
+    else if (currentPage >= totalPages - 1) {
+      for (let i = totalPages - 2; i <= totalPages; i++) {
+        pageNumbers.push(
+          <button
+            key={i}
+            onClick={() => handlePageChange(i)}
+            className={`page-button ${currentPage === i ? "active" : ""}`}
+          >
+            {i}
+          </button>
+        );
+      }
+    }
+    // Otherwise, show the current page in the middle with 1 page before and after
+    else {
+      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+        pageNumbers.push(
+          <button
+            key={i}
+            onClick={() => handlePageChange(i)}
+            className={`page-button ${currentPage === i ? "active" : ""}`}
+          >
+            {i}
+          </button>
+        );
+      }
+    }
+  
     return pageNumbers;
   };
 

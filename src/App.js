@@ -17,44 +17,82 @@ import Hijabi from './componet/Hijabi';
 import Popular from './componet/Popular';
 import NewVideos from './componet/NewVideos';
 import TopRate from './componet/TopRate';
+import Video from './componet/videoPage/Video';
+import Movies from './componet/Movies';
+import ScrollToTop from './componet/videoPage/ScrollToTop';
+import { Navigate } from "react-router-dom";
+import NotFound from './componet/NotFound';
+import SearchByName from './componet/videoPage/SearchByName';
+import Login from './adminComponets/login';
+
+import ProtectedRoute from './adminComponets/ProtectedRoute'; 
 
 function App() {
-  
-
-
   return (
-   <>
+    <>
+      <SearchProvider>
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/channels" element={<Channel />} />
+            <Route path="/stars" element={<Starts />} />
+            <Route path="/indian" element={<Indians />} />
+            <Route path="/movies" element={<Movies />} />
+            <Route path="/hijabi" element={<Hijabi />} />
+            <Route path="/popularVideos" element={<Popular />} />
+            <Route path="/newVideos" element={<NewVideos />} />
+            <Route path="/toprated" element={<TopRate />} />
+            <Route path="/playVideo/:id" element={<Video />} />
+            <Route path="/pornstar/:name" element={<SearchByName />} />
 
-<SearchProvider>
-   <Router>
+            {/* Login Route */}
+            <Route path='/admin' element={<Login />} />
 
-   
-    
-    <Routes>
-      
-      <Route path='/' element={<Home/>}></Route>
-        <Route path='/channels' element={<Channel/>}></Route>
-      <Route path='/stars' element={<Starts/>}></Route>
-      <Route path='/indian' element={<Indians/>}></Route>
-       <Route path='/hijabi' element={<Hijabi/>}></Route>
-      <Route path='/popularVideos' element={<Popular/>}></Route>
-      <Route path='/newVideos' element={<NewVideos/>}></Route>
-       <Route path='/toprated' element={<TopRate/>}></Route>
-     {/* admin componets */}
-     <Route path='/admin/aman' element={<Dashbord/>}></Route>
-     <Route path='/admin/stars' element={<AdminStars/>}></Route>
-     <Route path='/admin/terabox' element={<AdminTeraBox/>}></Route>
-     <Route path='/admin/channels' element={<AdminChannel/>}></Route>
-      
+            {/* Protected Admin Routes */}
+            <Route 
+              path="/admin/aman" 
+              element={
+                <ProtectedRoute>
+                  <Dashbord />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/stars" 
+              element={
+                <ProtectedRoute>
+                  <AdminStars />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/terabox" 
+              element={
+                <ProtectedRoute>
+                  <AdminTeraBox />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/channels" 
+              element={
+                <ProtectedRoute>
+                  <AdminChannel />
+                </ProtectedRoute>
+              } 
+            />
 
+            {/* 301 Redirects */}
+            <Route path="/old-movies" element={<Navigate to="/movies" replace />} />
 
-
-    </Routes>
-   
-   </Router>
-
-   </SearchProvider>
-   </>
+            {/* Catch-All 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </SearchProvider>
+    </>
   );
 }
 

@@ -5,36 +5,41 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 function Dashboard() {
   const [imageUrl, setImgUrl] = useState('');
-  const [name, setName] = useState('');
+  const [altKeywords, setAltKeywords] = useState('');
+  const [nameInput, setNameInput] = useState('');
+  const [name, setname] = useState([]);
   const [videoNo, setVideoNo] = useState('');
   const [views, setViews] = useState('');
   const [link, setLink] = useState('');
   const [titel, settitel] = useState('');
-  const [minutes,setMinutes] = useState('')
-  const [Category,setCategory]=useState('')
-  
+  const [minutes, setMinutes] = useState('');
+  const [Category, setCategory] = useState('');
+  const [desc, setDesc] = useState(''); // New state for description
+
   const [postdata, setData] = useState([]);
   const [postId, setPostId] = useState('');
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-  
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const itemsPerPage = 16;
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = { imageUrl,name, videoNo, views, link, titel,minutes,Category};
-
+    const formData = { imageUrl, altKeywords, name, videoNo, views, link, titel, minutes, Category, desc };
+  
     const url = isUpdateMode
       ? `${apiUrl}/updatepost/${postId}`
       : `${apiUrl}/postdata`;
-
+  
     const method = isUpdateMode ? 'PUT' : 'POST';
-
+  
     fetch(url, {
       method,
       headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     })
       .then(response => {
         if (!response.ok) {
@@ -46,18 +51,17 @@ function Dashboard() {
         if (data._id) {
           e.target.reset();
           resetForm();
-          fetchPostData();
+          fetchPostData(currentPage, searchQuery); // Re-fetch data for the current page
         }
       })
       .catch(error => {
         console.error('Error:', error);
       });
-  }
+  };
+  
 
-  const fetchPostData = () => {
-    fetch(`${apiUrl}/getpostdata`, {
-      mode: 'cors',
-    })
+  const fetchPostData = (page = 1, search = searchQuery) => {
+    fetch(`${apiUrl}/getpostdata?page=${page}&limit=${itemsPerPage}&search=${search}`, { mode: 'cors' })
       .then(res => {
         if (!res.ok) {
           throw new Error('Network response was not ok');
@@ -65,9 +69,9 @@ function Dashboard() {
         return res.json();
       })
       .then(data => {
-        const reversedData = data.reverse();
+        const reversedData = data.records;
         setData(reversedData);
-        console.log(data);
+        setTotalPages(data.totalPages);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -75,13 +79,11 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    fetchPostData();
-  }, []);
+    fetchPostData(currentPage, searchQuery); // Fetch data on mount and whenever currentPage or searchQuery changes
+  }, [currentPage, searchQuery]);
 
-  function handleDelete(id) {
-    fetch(`${apiUrl}/deletepost/${id}`, {
-      method: "DELETE"
-    })
+  const handleDelete = (id) => {
+    fetch(`${apiUrl}/deletepost/${id}`, { method: "DELETE" })
       .then(res => {
         if (!res.ok) {
           throw new Error('Network response was not ok');
@@ -90,25 +92,28 @@ function Dashboard() {
       })
       .then(data => {
         if (data._id) {
-          fetchPostData();
+          fetchPostData(currentPage, searchQuery); // Re-fetch data after deletion
         }
       })
       .catch(error => {
         console.error('Error:', error);
       });
-  }
+  };
 
-  function openUpdateModal(item) {
+  const openUpdateModal = (item) => {
     setIsUpdateMode(true);
     setPostId(item._id);
     setImgUrl(item.imageUrl);
-    setName(item.name)
+    setAltKeywords(item.altKeywords || '');
+    setname(item.name || []);
     setVideoNo(item.videoNo);
     setViews(item.views);
     setLink(item.link);
     settitel(item.titel);
-    setMinutes(item.minutes)
-  }
+    setMinutes(item.minutes);
+    setCategory(item.Category);
+    setDesc(item.desc || '');
+  };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -126,20 +131,25 @@ function Dashboard() {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1); // Reset to the first page when the search query changes
+  };
+
   const resetForm = () => {
     setImgUrl('');
-    setName('')
+    setAltKeywords('');
+    setNameInput('');
+    setname([]);
     setVideoNo('');
     setViews('');
     setLink('');
     settitel('');
-    setMinutes('')
+    setMinutes('');
+    setCategory('');
+    setDesc(''); // Reset desc
     setIsUpdateMode(false);
   };
-
-  const totalPages = Math.ceil(postdata.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentPosts = postdata.slice(startIndex, startIndex + itemsPerPage);
 
   const renderPageNumbers = () => {
     let pageNumbers = [];
@@ -163,10 +173,13 @@ function Dashboard() {
     return pageNumbers;
   };
 
+  const removeName = (index) => {
+    setname(name.filter((_, i) => i !== index));
+  };
+
   return (
     <>
-   
-    <AdminNav/>
+      <AdminNav />
       <div className="w-50 m-auto">
         <button
           className="form-control btn btn-light mt-4 d-flex justify-content-center m-auto"
@@ -178,11 +191,20 @@ function Dashboard() {
         </button>
       </div>
 
-      
+      {/* Search bar */}
+      <div className="search-bar">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="form-control"
+          placeholder="Search by Title or Video No"
+        />
+      </div>
 
-      <div style={{marginTop:"7%"}} className="all-cards">
+      <div style={{ marginTop: "7%" }} className="all-cards">
         <div className="row row-cols-2 row-cols-md-5 g-4">
-          {currentPosts.map((item) => (
+          {postdata.map((item) => (
             <div className="col" key={item._id}>
               <div className="card">
                 <img src={item.imageUrl} className="card-img-top" alt="..." />
@@ -227,25 +249,74 @@ function Dashboard() {
             <div className="modal-body">
               <label htmlFor="image">Image Url</label>
               <input value={imageUrl} onChange={(e) => setImgUrl(e.target.value)} className="form-control" type="text" name="imageUrl" id="image" />
-              <label htmlFor="image">Star Name</label>
-              <input value={name} onChange={(e) => setName(e.target.value)} className="form-control" type="text" name="imageUrl" id="image" />
-              <label htmlFor="image">Titel</label>
-              <input value={titel} onChange={(e) => settitel(e.target.value)} className="form-control" type="text" name="imageUrl" id="image" />
-              <label htmlFor="videoNo">Video No.</label>
-              <input value={videoNo} onChange={(e) => setVideoNo(e.target.value)} className="form-control" type="number" id="videoNo" name="videoNo" />
-              <label htmlFor="views">Minutes</label>
-              <input value={minutes} onChange={(e) => setMinutes(e.target.value)} className="form-control" type="number" id="minutes" name="minutes" />
-             
-              <label htmlFor="link">Video Link</label>
-              <input value={link} onChange={(e) => setLink(e.target.value)} className="form-control" type="text" id="link" name="link" />
+              <label>Image Alt Keywords</label>
+              <input
+                value={altKeywords}
+                onChange={(e) => setAltKeywords(e.target.value)}
+                className="form-control"
+                type="text"
+                name="altKeywords"
+                id="altKeywords"
+              />
+              <label htmlFor="name">Star name</label>
+              <div className="mb-2 d-flex">
+                <input
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  className="form-control"
+                  type="text"
+                  placeholder="Enter name"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (nameInput.trim() !== "") {
+                      setname([...name, nameInput.trim()]);
+                      setNameInput('');
+                    }
+                  }}
+                  className="btn btn-light ms-2"
+                >
+                  Add
+                </button>
+              </div>
+              {/** Render the name tags */}
+              {name.map((n, index) => (
+                <div style={{background:"black", color:"#ffff"}} className="name-tag" key={index}>
+                  {n}
+                  <i onClick={() => removeName(index)} className="bi bi-x-circle"></i>
+                </div>
+              ))}
 
-              <label htmlFor="">Category</label>
-              <select className="form-control" name="" id="" value={Category} onChange={(e)=>{setCategory(e.target.value)}}>
+              <label htmlFor="title">Title</label>
+              <input value={titel} onChange={(e) => settitel(e.target.value)} className="form-control" type="text" name="title" id="title" />
+
+              <label htmlFor="minutes">Minutes</label>
+              <input value={minutes} onChange={(e) => setMinutes(e.target.value)} className="form-control" type="number" name="minutes" id="minutes" />
+
+              <label htmlFor="category">Category</label>
+              <select className="form-control" name="" id="" value={Category} onChange={(e) => { setCategory(e.target.value) }}>
                 <option className="text-light" value="english">English</option>
                 <option className="text-light" value="indian">Indian</option>
                 <option className="text-light" value="hijabi">Hijabi</option>
                 <option className="text-light" value="viral">Viral</option>
               </select>
+              <label htmlFor="desc">Description</label>
+              <textarea
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+                className="form-control"
+                name="desc"
+                id="desc"
+                rows="3"
+              ></textarea>
+
+              <label htmlFor="videoNo">Video No</label>
+              <input value={videoNo} onChange={(e) => setVideoNo(e.target.value)} className="form-control" type="number" name="videoNo" id="videoNo" />
+
+              <label htmlFor="link">Link</label>
+              <input value={link} onChange={(e) => setLink(e.target.value)} className="form-control" type="text" name="link" id="link" />
+
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
